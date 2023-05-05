@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -34,7 +35,7 @@ class HelloControllerTest {
     @Captor
     ArgumentCaptor<Long> longArgumentCaptor;
     @Captor
-    ArgumentCaptor<String> stringArgumentCaptor;
+    ArgumentCaptor<ItemDto> itemDtoArgumentCaptor;
 
     @Test
     void testGet() throws Exception {
@@ -43,13 +44,13 @@ class HelloControllerTest {
         LocalDateTime createdTime = LocalDateTime.now();
         ItemDto responseMessageBody = ItemDto.builder()
                 .id(id)
-                .content("content")
+                .content(content)
                 .createdAt(createdTime)
                 .build();
 
         when(helloService.getItem(id)).thenReturn(responseMessageBody);
 
-        this.mockMvc.perform(get("/api/get/" + id))
+        this.mockMvc.perform(get("/api/item/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(
@@ -59,5 +60,23 @@ class HelloControllerTest {
         verify(helloService, times(1)).getItem(longArgumentCaptor.capture());
 
         assertThat(longArgumentCaptor.getValue()).isEqualTo(id);
+    }
+
+    @Test
+    void testSave() throws Exception {
+        String content = "content";
+
+        when(helloService.saveItem(itemDtoArgumentCaptor.capture()))
+                .thenReturn(1L);
+
+        this.mockMvc.perform(post("/api/item")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(ItemDto.builder().content(content).build())))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"));
+
+        verify(helloService, times(1)).saveItem(itemDtoArgumentCaptor.capture());
+
+        assertThat(itemDtoArgumentCaptor.getValue().getContent()).isEqualTo(content);
     }
 }

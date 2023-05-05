@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class HelloService {
 
     private final HelloRepository helloRepository;
+
     public ItemDto getItem(Long id) {
         Item item = helloRepository.getReferenceById(id);
         return ItemDto.builder()
@@ -20,4 +21,8 @@ public class HelloService {
                 .build();
     }
 
+    public Long saveItem(ItemDto itemDto) {
+        Item savedItem = helloRepository.save(new Item(null, itemDto.getContent(), null));
+        return savedItem.getId();
+    }
 }

@@ -1,5 +1,6 @@
 package com.study.web.service
 
+import com.study.common.dto.ItemDto
 import com.study.web.domain.Item
 import com.study.web.repository.HelloRepository
 import spock.lang.Specification
@@ -34,5 +35,21 @@ class HelloServiceTest extends Specification {
         1     | 1L | "content" | LocalDateTime.now()
         2     | 1L | null      | LocalDateTime.now()
         3     | 1L | "content" | null
+    }
+
+    def "testSave"() {
+        given:
+        def content = "content"
+        def itemDto = ItemDto.builder()
+                .content(content)
+                .build()
+        def savedItem = new Item(1L, content, LocalDateTime.now())
+
+        when:
+        def result = target.saveItem(itemDto)
+
+        then:
+        1 * helloRepository.save(_ as Item) >> savedItem
+        result == 1L
     }
 }

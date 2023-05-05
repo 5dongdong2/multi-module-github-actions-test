@@ -19,5 +19,5 @@ public class Item {
     @Column
     private String content;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

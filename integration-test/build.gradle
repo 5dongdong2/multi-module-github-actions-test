@@ -1,0 +1,20 @@
+plugins {}
+
+group 'com.study.integration_test'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+dependencies {
+    implementation project(':common')
+
+    testImplementation 'io.rest-assured:rest-assured:5.3.0'
+}
+
+bootJar {
+    //include main method: true
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

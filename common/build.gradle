@@ -1,0 +1,14 @@
+plugins {}
+
+group 'com.study.common'
+
+dependencies {}
+
+bootJar {
+    //include main method: true
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

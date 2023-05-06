@@ -38,15 +38,12 @@ jobs:
           timeout=20
           while [[ "$timeout" -gt 0 ]]; do
             if curl --fail http://localhost:8080/api/health; then
-              echo "API server health check succeeded"
               exit 0
             else
-              echo "API server health check failed, retrying in 1 second"
               sleep 1
               ((timeout--))
             fi
           done
-          echo "API server health check failed after 20 seconds"
           exit 1
 
       - name: integration test

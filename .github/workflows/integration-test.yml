@@ -27,6 +27,9 @@ jobs:
       - name: web application build
         run: ./gradlew build --exclude-task integration-test:test
 
+      - name: chmod
+        run: sudo chmod -R +x ./web/build/lib/web-0.0.1-SNAPSHOT.jar
+
       - name: deploy in container
         run: java -jar ./web/build/lib/web-0.0.1-SNAPSHOT.jar
 

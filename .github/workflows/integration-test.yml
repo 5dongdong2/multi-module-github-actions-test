@@ -22,41 +22,32 @@ jobs:
           distribution: 'zulu'
 
       - name: Set up gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        uses: gradle/gradle-build-action@v2
 
       - name: web application build
         run: ./gradlew clean build --exclude-task integration-test:test
 
-      - name: ls -al ./web
-        run: ls -al ./web
+      - name: chmod
+        run: sudo chmod +x ./web/build/libs/web-0.0.1-SNAPSHOT.jar
 
-      - name: ls -al ./web/build
-        run: ls -al ./web/build
+      - name: deploy in container
+        run: java -jar ./web/build/libs/web-0.0.1-SNAPSHOT.jar
 
-      - name: ls -al ./web/build/lib
-        run: ls -al ./web/build/lib
-#
-#      - name: chmod
-#        run: sudo chmod +x /home/runner/work/multi-module-github-actions-test/multi-module-github-actions-test/web/build/lib/web-0.0.1-SNAPSHOT.jar
-#
-#      - name: deploy in container
-#        run: java -jar ./web/build/lib/web-0.0.1-SNAPSHOT.jar
-#
-#      - name: Wait for API server health check success
-#        run: |
-#          timeout=20
-#          while [[ "$timeout" -gt 0 ]]; do
-#            if curl --fail http://localhost:8080/api/health; then
-#              exit 0
-#            else
-#              sleep 1
-#              ((timeout--))
-#            fi
-#          done
-#          exit 1
-#
-#      - name: integration test
-#        run: ./gradlew integration-test:test
-#
-#      - name: api server stop
-#        run: lsof -i :8080 | awk '{print $2}' | grep -v PID | xargs kill -5
+      - name: Wait for API server health check success
+        run: |
+          timeout=20
+          while [[ "$timeout" -gt 0 ]]; do
+            if curl --fail http://localhost:8080/api/health; then
+              exit 0
+            else
+              sleep 1
+              ((timeout--))
+            fi
+          done
+          exit 1
+
+      - name: integration test
+        run: ./gradlew integration-test:test
+
+      - name: api server stop
+        run: lsof -i :8080 | awk '{print $2}' | grep -v PID | xargs kill -5

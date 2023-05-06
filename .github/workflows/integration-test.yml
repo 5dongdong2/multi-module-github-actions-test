@@ -24,7 +24,11 @@ jobs:
       - run: ./gradlew build --exclude-task integration-test:test
 
       - name: deploy in container
-        run: java -jar ./web/web-0.0.1-SNAPSHOT.jar
+        run: pwd
+      #        run: java -jar ./web/web-0.0.1-SNAPSHOT.jar
+      - name: deploy in container2
+        run: ls -al
+      #        run: java -jar ./web/web-0.0.1-SNAPSHOT.jar
 
       - name: Wait for API server health check success
         run: |

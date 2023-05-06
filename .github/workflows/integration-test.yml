@@ -21,15 +21,11 @@ jobs:
           distribution: 'zulu'
       - name: Build with Gradle
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        run: ./gradlew build --exclude-task integration-test:test
+      - run: ./gradlew build --exclude-task integration-test:test
       - name: deploy in container
         run: java -jar ./web/web-0.0.1-SNAPSHOT.jar
       - name: Wait for API server health check success
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'zulu'
-        run: |
+      - run: |
           timeout=20
           while [[ "$timeout" -gt 0 ]]; do
             if curl --fail http://localhost:8080/api/health; then
@@ -44,7 +40,6 @@ jobs:
           echo "API server health check failed after 20 seconds"
           exit 1
       - name: integration test
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        run: ./gradlew integration-test:test
+      - run: ./gradlew integration-test:test
       - name: api server stop
-        run: lsof -i :8080 | awk '{print $2}' | grep -v PID | xargs kill -5
+      - run: lsof -i :8080 | awk '{print $2}' | grep -v PID | xargs kill -5

@@ -42,7 +42,6 @@ public class HelloControllerIntegrationTest {
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body("id", equalTo(savedId))
-                .body("content", equalTo(content));
+                .body("content", equalTo(content + "_fail"));
     }
-
 }

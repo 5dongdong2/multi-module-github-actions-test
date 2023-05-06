@@ -31,7 +31,7 @@ jobs:
         run: sudo chmod +x ./web/build/libs/web-0.0.1-SNAPSHOT.jar
 
       - name: deploy in container
-        run: java -jar ./web/build/libs/web-0.0.1-SNAPSHOT.jar
+        run: java -jar ./web/build/libs/web-0.0.1-SNAPSHOT.jar & sleep 10
 
       - name: Wait for API server health check success
         run: |

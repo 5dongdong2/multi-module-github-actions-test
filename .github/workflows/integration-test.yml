@@ -27,14 +27,14 @@ jobs:
       - name: web application build
         run: ./gradlew clean build --exclude-task integration-test:test
 
-      - name: ll -al ./web
-        run: ll -al ./web
+      - name: ls -al ./web
+        run: ls -al ./web
 
-      - name: ll -al ./web/build
-        run: ll -al ./web/build
+      - name: ls -al ./web/build
+        run: ls -al ./web/build
 
-      - name: ll -al ./web/build/lib
-        run: ll -al ./web/build/lib
+      - name: ls -al ./web/build/lib
+        run: ls -al ./web/build/lib
 #
 #      - name: chmod
 #        run: sudo chmod +x /home/runner/work/multi-module-github-actions-test/multi-module-github-actions-test/web/build/lib/web-0.0.1-SNAPSHOT.jar

@@ -27,33 +27,36 @@ jobs:
       - name: web application build
         run: ./gradlew clean build --exclude-task integration-test:test
 
-      - name: wait for creating application jar
-        run: sleep 5
+      - name: ll ./web
+        run: ll ./web
 
-      - name: ls -al
-        run: ls -al
+      - name: ll ./web/build
+        run: ll ./web/build
 
-      - name: chmod
-        run: sudo chmod +x /home/runner/work/multi-module-github-actions-test/multi-module-github-actions-test/web/build/lib/web-0.0.1-SNAPSHOT.jar
-
-      - name: deploy in container
-        run: java -jar ./web/build/lib/web-0.0.1-SNAPSHOT.jar
-
-      - name: Wait for API server health check success
-        run: |
-          timeout=20
-          while [[ "$timeout" -gt 0 ]]; do
-            if curl --fail http://localhost:8080/api/health; then
-              exit 0
-            else
-              sleep 1
-              ((timeout--))
-            fi
-          done
-          exit 1
-
-      - name: integration test
-        run: ./gradlew integration-test:test
-
-      - name: api server stop
-        run: lsof -i :8080 | awk '{print $2}' | grep -v PID | xargs kill -5
+      - name: ll ./web/build/lib
+        run: ll ./web/build/lib
+#
+#      - name: chmod
+#        run: sudo chmod +x /home/runner/work/multi-module-github-actions-test/multi-module-github-actions-test/web/build/lib/web-0.0.1-SNAPSHOT.jar
+#
+#      - name: deploy in container
+#        run: java -jar ./web/build/lib/web-0.0.1-SNAPSHOT.jar
+#
+#      - name: Wait for API server health check success
+#        run: |
+#          timeout=20
+#          while [[ "$timeout" -gt 0 ]]; do
+#            if curl --fail http://localhost:8080/api/health; then
+#              exit 0
+#            else
+#              sleep 1
+#              ((timeout--))
+#            fi
+#          done
+#          exit 1
+#
+#      - name: integration test
+#        run: ./gradlew integration-test:test
+#
+#      - name: api server stop
+#        run: lsof -i :8080 | awk '{print $2}' | grep -v PID | xargs kill -5

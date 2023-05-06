@@ -27,8 +27,11 @@ jobs:
       - name: web application build
         run: ./gradlew clean build --exclude-task integration-test:test
 
-      - name: pwd
-        run: pwd
+      - name: wait for creating application jar
+        run: sleep 5
+
+      - name: ls -al
+        run: ls -al
 
       - name: chmod
         run: sudo chmod +x /home/runner/work/multi-module-github-actions-test/multi-module-github-actions-test/web/build/lib/web-0.0.1-SNAPSHOT.jar
